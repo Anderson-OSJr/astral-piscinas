@@ -1,0 +1,194 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum LeadInterest {
+  AQUECIMENTO_SOLAR
+  FOTOVOLTAICA
+  PISCINA
+  TRATAMENTO
+  LAZER
+  BANHO_CONFORTO
+  SERVICO
+  OUTRO
+}
+
+enum LeadStatus {
+  NOVO
+  EM_ATENDIMENTO
+  FECHADO
+  PERDIDO
+}
+
+enum AdminRole {
+  OWNER
+  EDITOR
+}
+
+model Store {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  name         String
+  address      String
+  neighborhood String
+  city         String
+  cep          String?
+  phone        String
+  whatsapp     String
+  email        String
+  lat          Float
+  lng          Float
+  mapsUrl      String?
+  /// [{ days: ["mon",...], opens: "08:00", closes: "18:00" }]
+  openingHours Json     @default("[]")
+  hoursNote    String?
+  image        String?
+  isMain       Boolean  @default(false)
+  order        Int      @default(0)
+  leads        Lead[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Category {
+  id          String     @id @default(cuid())
+  slug        String     @unique
+  name        String
+  description String?
+  icon        String?
+  image       String?
+  /// Página de solução à qual a categoria pertence (ex.: "piscinas", "tratamento")
+  section     String?
+  order       Int        @default(0)
+  parentId    String?
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children    Category[] @relation("CategoryTree")
+  products    Product[]
+}
+
+model Product {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  name             String
+  shortDescription String
+  description      String
+  specs            Json     @default("[]")
+  images           String[]
+  categoryId       String
+  category         Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  featured         Boolean  @default(false)
+  active           Boolean  @default(true)
+  order            Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([categoryId])
+}
+
+model Service {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  name        String
+  description String
+  icon        String?
+  image       String?
+  order       Int     @default(0)
+  active      Boolean @default(true)
+}
+
+model Lead {
+  id          String       @id @default(cuid())
+  name        String
+  phone       String
+  email       String?
+  city        String?
+  storeId     String?
+  store       Store?       @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  interest    LeadInterest @default(OUTRO)
+  message     String?
+  payload     Json?
+  sourcePage  String
+  utm         Json?
+  status      LeadStatus   @default(NOVO)
+  notes       String?
+  consentLgpd Boolean
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([createdAt])
+  @@index([status])
+}
+
+model Testimonial {
+  id     String  @id @default(cuid())
+  author String
+  role   String?
+  text   String
+  rating Int     @default(5)
+  active Boolean @default(true)
+  order  Int     @default(0)
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  type        String
+  city        String?
+  images      String[]
+  description String?
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+}
+
+model Promotion {
+  id       String    @id @default(cuid())
+  title    String
+  text     String?
+  ctaLabel String?
+  ctaHref  String?
+  startsAt DateTime?
+  endsAt   DateTime?
+  active   Boolean   @default(true)
+}
+
+model Post {
+  id             String    @id @default(cuid())
+  slug           String    @unique
+  title          String
+  excerpt        String
+  content        String
+  coverImage     String?
+  publishedAt    DateTime?
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Faq {
+  id       String @id @default(cuid())
+  question String
+  answer   String
+  category String @default("geral")
+  order    Int    @default(0)
+}
+
+model SiteSetting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  role         AdminRole @default(EDITOR)
+  createdAt    DateTime  @default(now())
+}

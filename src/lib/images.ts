@@ -1,0 +1,47 @@
+/**
+ * Banco de imagens provisórias (Unsplash, conferidas uma a uma).
+ * Todas são trocáveis pelo admin — substitua por fotos reais de obras da Astral.
+ */
+const u = (id: string, w = 1600) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`;
+
+export const IMG = {
+  poolGarden: u("1576013551627-0cc20b96c2a7", 2000),
+  poolWhiteHouse: u("1600596542815-ffad4c1539a9"),
+  poolModern: u("1613490493576-7fde63acd811"),
+  poolVilla: u("1613977257363-707ba9348227"),
+  poolFront: u("1602343168117-bb8ffe3e2e9f"),
+  poolBackyard: u("1564013799919-ab600027ffc6"),
+  poolAerial: u("1562778612-e1e0cda9915c"),
+  poolInfinity: u("1575429198097-0414ec08e8cd"),
+  poolSunset: u("1572331165267-854da2b10ccc"),
+  poolResort: u("1520250497591-112f2f40a3f4"),
+  poolPalms: u("1610641818989-c2051b5e2cfd"),
+  poolDeck: u("1584132967334-10e028bd69f7"),
+  poolTiles: u("1571896349842-33c89424de2d"),
+  swimmer: u("1530549387789-4c1017266635"),
+  solarField: u("1509391366360-2e959784a276"),
+  solarGrass: u("1497440001374-f26997328c1b"),
+  solarRows: u("1508514177221-188b1cf16e9d"),
+  solarRoofSunset: u("1611365892117-00ac5ef43c90"),
+  solarInstall: u("1624397640148-949b1732bb0a"),
+  solarHands: u("1559302504-64aae6ca6b6d"),
+  solarAerial: u("1497435334941-8c899ee9e8e9"),
+  showerBathroom: u("1584622650111-993a426fbf0a"),
+  bathtubStone: u("1507652313519-d4e9174996dd"),
+  bathtubWhite: u("1620626011761-996317b8d101"),
+  bathroomModern: u("1600566752355-35792bedcfea"),
+  spaStones: u("1600334129128-685c5582fd35"),
+  spaMassage: u("1544161515-4ab6ce6db874"),
+  spaTowels: u("1540555700478-4be289fbecef"),
+  outdoorLounge: u("1621275471769-e6aa344546d5"),
+  outdoorSofa: u("1567016432779-094069958ea5"),
+  resortDeck: u("1566073771259-6a8506099945"),
+  waterGlass: u("1548839140-29a749e1cf4d"),
+  smartHome: u("1558002038-1055907df827"),
+  cleaning: u("1563453392212-326f5e854473"),
+  technician: u("1621905251189-08b45d6a269e"),
+  welding: u("1504328345606-18bbc8c9d7d1"),
+  planning: u("1581092160562-40aa08e78837"),
+  sunsetField: u("1466611653911-95081537e5b7"),
+  houseModern: u("1600585154340-be6161a56a0c"),
+} as const;

@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: astral-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: astral
+      POSTGRES_PASSWORD: astral
+      POSTGRES_DB: astral
+    ports:
+      # 5433 para não conflitar com um Postgres já instalado na máquina
+      - "5433:5432"
+    volumes:
+      - astral-db-data:/var/lib/postgresql/data
+
+volumes:
+  astral-db-data:
